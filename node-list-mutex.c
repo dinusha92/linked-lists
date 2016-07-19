@@ -5,12 +5,13 @@
 
 int thread_count;                    //thread count
 void* threadOperation(void* rank);   //thread function
+pthread_mutex_t* mutex;
 
 int main(){
     long thread;
     pthread_t* thread_handles;
 
-    thread_count = 1024;
+    thread_count;
     thread_handles = malloc(thread_count*sizeof(pthread_t));
 
     for(thread=0; thread < thread_count ; thread++){
@@ -102,9 +103,4 @@ void print_list(Node *head) {
         printf("%d: %d\n", ++count, current->value);
         current = current->next;
     }
-}
-
-
-void mutexInsert (int value, Node_List **head_pp ) {
-
 }
