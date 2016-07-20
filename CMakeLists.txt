@@ -3,6 +3,6 @@ project(linked_lists)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES node.h main.c linked-list.c ops.h operations.c)
+set(SOURCE_FILES node.h main.c linked-list.c ops.h operations.c linked-list-readWriteLock.c)
 add_executable(linked_lists ${SOURCE_FILES})
 
