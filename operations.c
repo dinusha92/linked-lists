@@ -1,5 +1,5 @@
-#include <time.h>
 #include <stdlib.h>
+#include "node.h"
 #include "ops.h"
 
 // Convert the percentages of each operation into a concrete number
@@ -14,27 +14,26 @@ void ops_init(Ops *ops, int m, double p_ins, double p_del, double p_mem) {
 }
 
 void buildOpsList(Byte *opsList, Ops *ops, int m) {
-    time_t t;
     int rnd;
 
-    srand((unsigned) time(&t));
+    setSeed();
 
-    for (int i = 0; i < m; ) {
+    for (int i = 0; i < m;) {
         rnd = (rand() % 3) + 1;
         switch (rnd) {
-            case 1:
+            case INSERT_OP:
                 if (ops->n_insert > 0) {
                     opsList[i++] = INSERT_OP;
                     ops->n_insert--;
                 }
                 break;
-            case 2:
+            case DELETE_OP:
                 if (ops->n_delete > 0) {
                     opsList[i++] = DELETE_OP;
                     ops->n_delete--;
                 }
                 break;
-            case 3:
+            case MEMBER_OP:
                 if (ops->n_member > 0) {
                     opsList[i++] = MEMBER_OP;
                     ops->n_member--;
@@ -42,4 +41,26 @@ void buildOpsList(Byte *opsList, Ops *ops, int m) {
                 break;
         }
     }
+}
+
+void populateLinkedList(int n, Node **head_pp) {
+    int result;
+
+    setSeed();
+
+    // Insert n unique random integers in the range 0 - 65535 to the list
+    for (int i = 0; i < n; (result > 0) ? ++i : i)
+        result = Insert(rand() % VALUE_LIMIT, head_pp);
+}
+
+void deleteLinkedList(Node *head) {
+    Node *current;
+    while ((current = head) != NULL) {
+        head = head->next;
+        free(current);
+    }
+}
+
+void setSeed() {
+    srand(((rand()) % VALUE_LIMIT) * 39163);
 }

@@ -5,21 +5,27 @@
 #include "node.h"
 #include "ops.h"
 
-#define VALUE_LIMIT (1 << 16) - 1
+int linkedListMutex(Byte *opsList_, int n_threads_, int m_, int n_num_);
+
+void serialLinkedList(Byte *opsList_, int m_, int n_);
+
+int linkedListRWLock(Byte *opsList_, int n_threads_, int m_, int n_num_);
 
 int main() {
-    Node *head = NULL;
-    int n = 1000;
+//    Node *head = NULL;
+//    int n = 1000;
 //    Insert(10, &head);
-//    Insert(20, &head);
 //    Insert(30, &head);
-//    Insert(15, &head);
-//    Insert(25, &head);
 //    Insert(50, &head);
 //    Insert(60, &head);
+//    Insert(20, &head);
 //
 //    print_list(head);
 //    printf("\n");
+//
+//    deleteLinkedList(head);
+//
+//    print_list(head);
 //
 //    Delete(25, &head);
 //    printf("%d\n", Delete(10, &head));
@@ -43,45 +49,33 @@ int main() {
 //    print_list(head);
 //    printf("\n");
 //
-//    printf("%d\n", Member(30, head));
-//    printf("%d\n", Member(40, head));
-//    printf("%d\n", Member(50, head));
-//    printf("%d\n", Member(60, head));
-//    printf("%d\n", Member(160, head));
-    populateLinkedList(20, &head);
-    print_list(head);
-    int m = 100;
+//    printf("%d\n", Member(30, &head));
+//    printf("%d\n", Member(40, &head));
+//    printf("%d\n", Member(50, &head));
+//    printf("%d\n", Member(60, &head));
+//    printf("%d\n", Member(160, &head));
+//    populateLinkedList(20, &head); // Populate the linked list with random numbers
+//    print_list(head);
+//    typedef struct args {
+//        Node **head_pp;
+//        int value;
+//    } Args;
+    time_t t;
+    srand((unsigned)time(&t));
+    int m = 10;
+    int n = 20;
+    int n_threads = 2;
     Ops ops;
-    ops_init(&ops, m, 0.8, 0.1, 0.1);
+    ops_init(&ops, m, 0.8, 0.1, 0.1); // Workout the number of operations of each type
     Byte *opsList = malloc(sizeof(Byte) * m);
 
-    buildOpsList(opsList, &ops, m);
+    buildOpsList(opsList, &ops, m); // Build a randomly ordered list of operations to be carried out
 
-    for (int i = 0; i < m; ++i) {
-        printf("%d\n", opsList[i]);
-    }
-
+//    for (int i = 0; i < m; ++i) {
+//        printf("%d\n", opsList[i]);
+//    }
+    linkedListMutex(opsList, n_threads, m, n);
+    serialLinkedList(opsList, m, n);
+    linkedListRWLock(opsList, n_threads, m, n);
     return 0;
-}
-
-void populateLinkedList(int n, Node **head_pp) {
-    time_t t;
-    int result;
-
-    srand((unsigned) time(&t));
-
-    for (int i = 0; i < n; (result > 0) ? ++i : i)
-        result = Insert(rand() % VALUE_LIMIT, head_pp);
-}
-
-void runInsertThreads(Node **head_pp, int n_threads, int n_ops) {
-    int n_ops_remaining = n_ops;
-    pthread_t *ptr = malloc(sizeof(pthread_t) * n_threads);
-
-    for (int i = 0; i < n_threads; ++i) {
-//        pthread_create(&ptr[i], NULL, &runInsertOps )
-    }
-}
-
-void runInsertOps(Node **head_pp, int n_ops) {
 }
